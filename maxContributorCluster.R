@@ -1,12 +1,12 @@
-maxAccelerationCluster <- function(){
+maxContributorCluster <- function(){
         source("samsungData.R"); source("myplclust.R")
         samsungData <- samsungData()
         samsungData <- transform(samsungData, activity = factor(activity))
         sub1 <- subset(samsungData, subject == 1)  
+        svd1 = svd(scale(sub1[,-c(1, 2)])) #remove subject/activity identifier
         
-        #Clustering based on maximum acceleration
-        
-        distanceMatrix <- dist(sub1[,12:14]) #max acceleration columns
+        maxContrib <- which.max(svd1$v[,2])
+        distanceMatrix <- dist(sub1[, c(12:14, maxContrib)])
         hclustering <- hclust(distanceMatrix)
         myplclust(hclustering, lab.col = unclass(sub1$activity))
-}  
+}
