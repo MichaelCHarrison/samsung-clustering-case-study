@@ -14,13 +14,14 @@ samsungData <- function(){
         colnames(train_set) <- features[,2]
         
         library(dplyr)
-        samsungData <- tbl_df(do.call("cbind", c(train_subs, train_lab, train_set)))
+        data_tbl <- tbl_df(do.call("cbind", c(train_lab, train_subs, train_set)))
         
-        samsungData <- samsungData %>%
+        data_tbl <- data_tbl %>%
                 mutate(activity = plyr::mapvalues(activity,
-                                                  from = c(1:6), 
-                                                  to = as.character(activities[,2])),
-                       activity = tolower(gsub("_", "", activity)))
+                                                  from = c(1:6),
+                                                  to = as.character(activities[,2]))) %>%
+                mutate(activity = tolower(gsub("_", "", activity)))
                 
-        samsungData
+        data_tbl
+
 }
